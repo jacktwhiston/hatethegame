@@ -1,0 +1,32 @@
+name: Auto Book Desk
+
+on:
+  schedule:
+    - cron: '25 14 * * 0'  # 12:05am AEST Monday = 14:05 UTC Sunday
+  workflow_dispatch: 
+
+jobs:
+  book:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Run autobook
+        env:
+          CONDECO_HOST: ${{ secrets.CONDECO_HOST }}
+          CONDECO_USER_EMAIL: ${{ secrets.CONDECO_USER_EMAIL }}
+          CONDECO_USER_PWD: ${{ secrets.CONDECO_USER_PWD }}
+        run: |
+          export PYTHONPATH=$(pwd)
+          poetry run python ./examples/autobook.py
