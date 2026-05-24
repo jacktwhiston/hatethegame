@@ -161,7 +161,7 @@ class CondecoBooker:
                 user_bookings.append(booking)
         return user_bookings
 
-    def book_desk(self, date: datetime, resourceitem_id: str = '2383'):  # desk 69...
+    def book_desk(self, date: datetime, resourceitem_id: str = '2406'):  # desk 92...
         date_string = date.strftime('%d/%m/%Y')
         payload = {
             'UserID': self.user_id,
