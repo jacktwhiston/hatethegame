@@ -168,7 +168,7 @@ class CondecoBooker:
             'countryID': '3',
             'locationID': '12',
             'groupID': '61',
-            'datesRequested': f'{date_string}_0;{date_string}_1;',
+            'datesRequested': f'{date_string}_0;',
             'generalForm': 'fkUserID~¬firstName~¬lastName~¬company~¬emailAddress~¬telephone~¬isExternal~0¬notifyByPhone~0¬notifyByEmail~0¬notifyBySMS~',
             'bookingID': '0',
             'resourceItemID': resourceitem_id,
