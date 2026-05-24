@@ -108,7 +108,7 @@ class CondecoBooker:
         data = {
             'token': token,  # or extract JWT if in page/response
             'requestDateTime': request_datetime.split('+')[0] + 'Z',
-            'requestTimeZoneOffset': '-600',
+            'requestTimeZoneOffset': '600',
         }
 
         response = self.session.post(
@@ -139,7 +139,7 @@ class CondecoBooker:
             'ViewType': '2',
             'LanguageId': '1',
             'ResourceType': '128',
-            'StartDate': f'{date.strftime("%Y-%M-%d")}T00:00:00',
+            'StartDate': f'{date.strftime("%Y-%m-%d")}T00:00:00',
         }
 
         self.logger.info('Fetching bookings')
@@ -189,6 +189,7 @@ class CondecoBooker:
             timeout=CondecoBooker.TIMEOUT,
         )
 
-        # TODO: Check our booking was actually successful
+        self.logger.info(f'Booking response status: {response.status_code}')
+        self.logger.info(f'Booking response body: {response.text}')
 
         return response
