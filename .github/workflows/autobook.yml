@@ -1,8 +1,6 @@
 name: Auto Book Desk
 
 on:
-  schedule:
-    - cron: '25 14 * * 0'  # 12:05am AEST Monday = 14:05 UTC Sunday
   workflow_dispatch: 
 
 jobs:
