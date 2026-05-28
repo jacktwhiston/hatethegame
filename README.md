@@ -50,6 +50,73 @@ Install poetry if you haven't already. https://python-poetry.org/
 
 </details>
 
+### 🚀 Alternative Recommended Easy Setup
+
+Follow these steps to deploy your own automated desk booker using GitHub Actions.
+
+<details><summary><b>Show instructions</b></summary>
+
+#### 1. Retrieve your Desk ID
+Before configuring the code, you need to identify which desk you want to book.
+1. Open your browser and navigate to the Condeco booking page.
+2. Open **Developer Tools** (`F12` or `Cmd+Opt+I`) and go to the **Network** tab.
+3. Perform a "Book" or "Unbook" action on your desk.
+4. Look for the network request triggered by this action.
+5. Inspect the **Payload** (or Request Body) of that message.
+6. Locate and copy your `desk_id`.
+
+#### 2. Prepare the Repository
+1. **Fork** this repository to your own GitHub account.
+2. In your fork, open `condeco.py`.
+3. Locate **line 164** and replace the placeholder string with your retrieved `desk_id`.
+4. Commit your changes.
+
+#### 3. Configure GitHub Secrets
+To keep your credentials secure, do **not** hardcode them. Use GitHub Actions Secrets instead:
+1. Navigate to your repository on GitHub.
+2. Go to **Settings** $\rightarrow$ **Secrets and variables** $\rightarrow$ **Actions**.
+3. Click **New repository secret** and add the following (do not include curly braces):
+    * `CONDECO_HOST`: Your Condeco website address (e.g., `exampledomain.com`)
+    * `CONDECO_USER_EMAIL`: Your Condeco login email.
+    * `CONDECO_USER_PWD`: Your Condeco login password.
+
+#### 4. Generate a GitHub Personal Access Token (PAT)
+The cron job needs permission to trigger your GitHub Action.
+1. Click your GitHub profile picture $\rightarrow$ **Settings**.
+2. Scroll down to **Developer settings** (bottom of left sidebar).
+3. Select **Personal access tokens** $\rightarrow$ **Fine-grained tokens**.
+4. Click **Generate new token**.
+5. Give it a name and ensure it has permissions to "Actions: Read and Write."
+6. **Copy this token immediately**; you will need it for the next step.
+
+#### 5. Automate with a Cron Job
+We will use [cron-job.org](https://cron-job.org) to trigger the booking script daily.
+1. Create an account and log in to [cron-job.org](https://cron-job.org).
+2. Click **'CREATE CRONJOB'**.
+3. **Title:** `Hate the Game - Daily Desk Booking`
+4. **URL:** Enter the following, replacing `{your_username}` with your GitHub username:
+   `https://api.github.com/repos/{your_username}/hatethegame/actions/workflows/autobook.yml/dispatches`
+5. **Schedule:** Select your preferred execution time (e.g., every day at 5:25 AM).
+6. **Advanced Settings (Headers):** Add the following headers:
+
+| Key | Value |
+| :--- | :--- |
+| `Accept` | `application/vnd.github+json` |
+| `Authorization` | `Bearer YOUR_GITHUB_TOKEN_HERE` |
+| `Content-Type` | `application/json` |
+| `X-GitHub-Api-Version` | `2022-11-28` |
+
+7. **Request Method:** `POST`
+8. **Request Body:** `{"ref": "main"}`
+9. **Timezone:** Enter your timezone in `Region/City` format (e.g., `Australia/Brisbane` or `America/New_York`). 
+   *If unsure, search Google for "IANA timezone" or check the [Wikipedia List](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).*
+10. Click **Save**.
+
+> [!TIP]
+> **Testing:** To verify everything is working, set your cron job to run in 5 minutes, or manually trigger the workflow in your GitHub "Actions" tab.
+
+</details>
+
 ## Disclaimer
 
 I'm not responsible for anything that goes wrong if you choose to use this. Enjoy responsibly.
