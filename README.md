@@ -68,8 +68,11 @@ Before configuring the code, you need to identify which desk you want to book.
 #### 2. Prepare the Repository
 1. **Fork** this repository to your own GitHub account.
 2. In your fork, open `condeco.py`.
-3. Locate **line 164** and replace the placeholder string with your retrieved `desk_id`.
-4. Commit your changes.
+4. Locate **line 164** and replace the placeholder string with your retrieved `desk_id`.
+5. Now, open `autobook.py`.
+6. Locate **line 8** and replace it with your timezon in `Region/City` format (e.g., `Australia/Brisbane` or `America/New_York`).
+   *If unsure, search Google for "IANA timezone" or check the [Wikipedia List](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).*
+7. Commit your changes.
 
 #### 3. Configure GitHub Secrets
 To keep your credentials secure, do **not** hardcode them. Use GitHub Actions Secrets instead:
@@ -109,7 +112,6 @@ We will use [cron-job.org](https://cron-job.org) to trigger the booking script d
 7. **Request Method:** `POST`
 8. **Request Body:** `{"ref": "main"}`
 9. **Timezone:** Enter your timezone in `Region/City` format (e.g., `Australia/Brisbane` or `America/New_York`). 
-   *If unsure, search Google for "IANA timezone" or check the [Wikipedia List](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).*
 10. Click **Save**.
 
 > [!TIP]
