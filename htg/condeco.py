@@ -120,12 +120,14 @@ class CondecoBooker:
         # Get the EliteSession cookie from the session
         elite_session_cookie = self.session.cookies.get('EliteSession')
 
-        if not elite_session_cookie:
+        access_token = self.session.cookies.get('AccessToken')
+
+        if not elite_session_cookie or not access_token:
             self.logger.error('Login Failed: Unable to retrieve EliteSession cookie')
             return
 
-        self.session.headers['Authorization'] = f'Bearer {elite_session_cookie}'
-        self.logger.info('FOUND EliteSession token')
+        self.session.headers['Authorization'] = f'Bearer {access_token}'
+        self.logger.info('FOUND Authorization token (from AccessToken cookie)')
 
     def get_bookings(self, date: datetime) -> dict:
         payload = {
@@ -185,7 +187,7 @@ class CondecoBooker:
         # Send the desk booking request.
         response = self.session.post(
             url=f'https://{self.host}/webapi/BookingService/SaveDeskBooking',
-            data=payload,
+            json=payload,
             timeout=CondecoBooker.TIMEOUT,
         )
 
